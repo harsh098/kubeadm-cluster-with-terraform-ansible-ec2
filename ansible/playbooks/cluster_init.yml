@@ -11,10 +11,6 @@
         delay: 10
         timeout: 200
 
-    - name: Set a hostname
-      ansible.builtin.hostname:
-        name: "{{ node_hostname }}"
-
     - name: Create /etc/hosts template
       lineinfile:
         path: /etc/hosts
