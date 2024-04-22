@@ -1,12 +1,12 @@
 resource "ansible_host" "master" {
   depends_on = [ aws_instance.master ]
   groups = [ "master" ]
-  name = "master"
+  name = "control_plane"
   variables = {
     ansible_user = var.ansible_user_for_master_node
     ansible_host = aws_instance.master.public_ip
     ansible_ssh_private_key_file = local_file.ssh_private_key.filename
-    node_hostname = "master"
+    node_hostname = "control_plane"
   }
 }
 

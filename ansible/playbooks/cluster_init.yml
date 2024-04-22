@@ -171,4 +171,4 @@
   become: true
   tasks:
     - name: add worker nodes to cluster
-      shell: "sudo {{ hostvars['master'].join_node }}"
+      shell: "sudo {{ hostvars['control_plane'].join_node }}"
