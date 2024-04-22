@@ -63,6 +63,13 @@ jobs:
           pwd
           cat ${{ github.workspace }}/ansible/hosts
       
+      - name: Create inventory.yml
+        run: |
+          cat <<EOF > inventory.yml
+          ---
+          plugin: cloud.terraform.terraform_provider
+          EOF
+      
       - name: Run The Playbook
         run: |
-          ansible-playbook -i ../ansible/inventory.yml ../ansible/playbooks/cluster_init.yml
+          ansible-playbook -i ansible/inventory.yml ../ansible/playbooks/cluster_init.yml
