@@ -3,3 +3,4 @@
 *.lock.hcl
 *.pub
 */id_rsa
+*/kubeconfig
