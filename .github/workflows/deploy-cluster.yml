@@ -57,7 +57,9 @@ jobs:
       
       - name: Terraform Apply
         id: apply
-        run: terraform apply -auto-approve
+        run: |
+          terraform plan -no-color 
+          terraform apply -auto-approve
       
       - name: Run The Playbook
         run: |
