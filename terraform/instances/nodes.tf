@@ -19,7 +19,6 @@ resource "aws_instance" "master" {
   }
 
   provisioner "local-exec" {
-    when = create
     command = "echo 'master ${self.public_ip}' >> ${var.ansible_config_path}/hosts"
   }
 }
@@ -47,7 +46,6 @@ resource "aws_instance" "workers" {
   }
 
   provisioner "local-exec" {
-    when = create
     command = "echo 'worker-${count.index} ${self.public_ip}' >> ${var.ansible_config_path}/hosts"
   }
 
