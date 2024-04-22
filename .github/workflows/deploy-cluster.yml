@@ -60,7 +60,7 @@ jobs:
         run: |
           terraform plan -no-color 
           terraform apply -auto-approve
-          echo ../ansible/hosts
+          cat ../ansible/hosts
       
       - name: Run The Playbook
         run: |
