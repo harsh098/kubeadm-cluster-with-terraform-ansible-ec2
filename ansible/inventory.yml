@@ -1,2 +1,2 @@
 ---
-plugin: cloud.terraform.terraform_provider
+plugin: cloud.terraform
