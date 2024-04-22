@@ -15,17 +15,13 @@
       ansible.builtin.hostname:
         name: "{{ node_hostname }}"
 
-    - name: Copy /etc/hosts template
-      ansible.builtin.copy:
-        backup: true
-        src: ../hosts
-        dest: /tmp/hosts
-
-    - name: Insert/Update configuration using a local file and validate it
-      ansible.builtin.blockinfile:
-        block: "{{ lookup('file', '../hosts') }}"
+    - name: Create /etc/hosts template
+      lineinfile:
         path: /etc/hosts
+        line: "{{ hostvars[item]['ansible_host'] }} {{ hostvars[item]['inventory_hostname'] }}"
+        state: present
         backup: yes
+      loop: "{{ groups['all'] }}"
 
     - name: Disable swap on all nodes
       ansible.builtin.shell: swapoff -a

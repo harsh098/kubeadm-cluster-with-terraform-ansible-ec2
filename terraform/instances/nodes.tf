@@ -43,29 +43,3 @@ resource "aws_instance" "workers" {
   }
 
 }
-
-resource "null_resource" "cluster" {
-  depends_on = [ aws_instance.master ]
-  triggers = {
-    cluster_master_node = aws_instance.master.id
-    ansible_config_path = var.ansible_config_path
-  }
-
-  provisioner "local-exec" {
-    when = destroy
-    command = "rm -f ${self.triggers["ansible_config_path"]}/hosts"
-  }  
-}
-
-resource "null_resource" "master_entry" {
-  provisioner "local-exec" {
-    command = "echo 'master ${aws_instance.master.public_ip}}' >> ${var.ansible_config_path}/hosts"
-  }
-}
-
-resource "null_resource" "worker_entry" {
-  count = var.node_count
-  provisioner "local-exec" {
-    command = "echo 'worker-${count.index} ${aws_instance.workers[count.index].public_ip}' >> ${var.ansible_config_path}/hosts"
-  }
-}
