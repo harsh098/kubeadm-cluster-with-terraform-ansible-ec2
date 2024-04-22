@@ -18,9 +18,6 @@ resource "aws_instance" "master" {
     volume_size = 14
   }
 
-  provisioner "local-exec" {
-    command = "echo 'master ${self.public_ip}' >> ${var.ansible_config_path}/hosts"
-  }
 }
 
 
@@ -45,10 +42,6 @@ resource "aws_instance" "workers" {
     volume_size = 14
   }
 
-  provisioner "local-exec" {
-    command = "echo 'worker-${count.index} ${self.public_ip}' >> ${var.ansible_config_path}/hosts"
-  }
-
 }
 
 resource "null_resource" "cluster" {
@@ -62,4 +55,17 @@ resource "null_resource" "cluster" {
     when = destroy
     command = "rm -f ${self.triggers["ansible_config_path"]}/hosts"
   }  
+}
+
+resource "null_resource" "master_entry" {
+  provisioner "local-exec" {
+    command = "echo 'master ${aws_instance.master.public_ip}}' >> ${var.ansible_config_path}/hosts"
+  }
+}
+
+resource "null_resource" "worker_entry" {
+  count = var.node_count
+  provisioner "local-exec" {
+    command = "echo 'worker-${count.index} ${aws_instance.workers[count.index].public_ip}' >> ${var.ansible_config_path}/hosts"
+  }
 }
