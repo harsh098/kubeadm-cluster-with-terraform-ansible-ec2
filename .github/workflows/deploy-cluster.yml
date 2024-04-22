@@ -61,7 +61,7 @@ jobs:
           terraform plan -no-color 
           terraform apply -auto-approve
           pwd
-          cat ../ansible/hosts
+          cat ${{ github.workspace }}/ansible/hosts
       
       - name: Run The Playbook
         run: |
