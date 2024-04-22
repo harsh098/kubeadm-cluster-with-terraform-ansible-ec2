@@ -165,6 +165,7 @@
     - name: Save join command as variable
       ansible.builtin.set_fact:
         join_node: "{{ join_node_token.stdout_lines[0] }}"
+      
 
 - name: Setup Worker Nodes
   hosts: workers
@@ -172,3 +173,4 @@
   tasks:
     - name: add worker nodes to cluster
       shell: "sudo {{ hostvars['control_plane'].join_node }}"
+      when: hostvars['control_plane'].join_node is defined
