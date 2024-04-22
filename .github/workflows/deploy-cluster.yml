@@ -61,13 +61,6 @@ jobs:
           terraform plan -no-color 
           terraform apply -auto-approve
       
-      - name: Create inventory.yml
-        run: |
-          cat <<EOF > inventory.yml
-          ---
-          plugin: cloud.terraform.terraform_provider
-          EOF
-      
       - name: Run The Playbook
         run: |
-          ansible-playbook -i inventory.yml ../ansible/playbooks/cluster_init.yml
+          ansible-playbook -i ../ansible/inventory.yml ../ansible/playbooks/cluster_init.yml
