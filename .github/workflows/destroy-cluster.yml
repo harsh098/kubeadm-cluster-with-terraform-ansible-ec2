@@ -1,0 +1,46 @@
+name: Destroy Provisioned Kubernetes Cluster
+
+on:
+  workflow_dispatch:
+
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+
+jobs:
+  destroy_infra:
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_github_workspace: ${{ github.workspace }}/terraform
+      TF_LOG: INFO
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ github.workspace }}/terraform
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE}}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHub-OIDC-K8S-cluster
+
+      - name: Checkout repository
+        uses: actions/checkout@v1
+ 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.5
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      
+      - name: Terraform Destroy
+        id: destroy
+        run: terraform destroy -auto-approve
+        
