@@ -1,6 +1,7 @@
 name: Provision Kubernetes Cluster
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
