@@ -61,4 +61,4 @@ jobs:
       
       - name: Run The Playbook
         run: |
-          ansible-playbook -i ../inventory.yml ../playbooks/cluster_init.yml
+          ansible-playbook -i ../ansible/inventory.yml ../ansible/playbooks/cluster_init.yml
